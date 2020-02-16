@@ -2,5 +2,5 @@ package slackalerts;
 
 @FunctionalInterface
 public interface SlackNotificationSender {
-    void sendNotification() throws Exception;
+    void send(String context);
 }

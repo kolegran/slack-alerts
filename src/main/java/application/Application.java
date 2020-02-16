@@ -1,6 +1,8 @@
 package application;
 
-import slackalerts.SlackNotificationSenderImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import slackalerts.HttpSlackNotificationSender;
 
 import java.net.http.HttpClient;
 import java.util.concurrent.ExecutorService;
@@ -10,22 +12,31 @@ import java.util.concurrent.TimeUnit;
 public class Application {
     private static final int TERMINATION_TIMEOUT = 1;
     private static final String SLACK_URL = "secretUrl";
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
+        final HttpClient httpClient = buildHttpClient();
+        final HttpSlackNotificationSender slackNotificationSender = new HttpSlackNotificationSender(SLACK_URL, httpClient);
+        slackNotificationSender.send("Something went wrong");
+        shutdown(httpClient);
+    }
+
+    private static HttpClient buildHttpClient() {
+        return HttpClient.newBuilder()
+                .executor(Executors.newSingleThreadExecutor())
+                .build();
+    }
+
+    private static void shutdown(HttpClient httpClient) {
+        final ExecutorService executor = (ExecutorService) httpClient.executor().get();
+        executor.shutdown();
         try {
-            HttpClient httpClient = HttpClient.newBuilder()
-                    .executor(Executors.newSingleThreadExecutor())
-                    .build();
-
-            SlackNotificationSenderImpl slackNotificationSender = new SlackNotificationSenderImpl("Something went wrong", SLACK_URL, httpClient);
-            slackNotificationSender.sendNotification();
-
-            ExecutorService executor = (ExecutorService) httpClient.executor().get();
-            executor.shutdown();
             executor.awaitTermination(TERMINATION_TIMEOUT, TimeUnit.SECONDS);
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            System.err.println("Something went wrong");
+            logger.error("InterruptedException during awaitTermination() method calling");
+        } finally {
+            executor.shutdownNow();
         }
     }
 }
