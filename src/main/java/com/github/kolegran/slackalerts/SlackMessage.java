@@ -1,4 +1,4 @@
-package slackalerts;
+package com.github.kolegran.slackalerts;
 
 public class SlackMessage {
     private final String text;
