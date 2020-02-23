@@ -5,13 +5,15 @@ plugins {
 group 'kolegran.github.com'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    compile 'org.springframework:spring-context-support:3.2.0.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-web:2.2.2.RELEASE'
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.10.0'
     testCompile 'junit:junit:4.12'
