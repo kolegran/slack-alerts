@@ -6,7 +6,7 @@ import com.github.kolegran.slackalerts.SlackNotificationSender;
 import java.net.http.HttpClient;
 import java.util.List;
 
-public class SlackSnippetSender implements SlackNotificationSender<List<StackTraceElement>> {
+public class SlackSnippetSender implements SlackNotificationSender {
     private final String authorizationToken;
     private final String uploadUrl;
     private final String channel;

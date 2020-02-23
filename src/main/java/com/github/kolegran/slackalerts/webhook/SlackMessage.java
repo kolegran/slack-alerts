@@ -1,4 +1,4 @@
-package com.github.kolegran.slackalerts;
+package com.github.kolegran.slackalerts.webhook;
 
 public class SlackMessage {
     private final String text;

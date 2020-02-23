@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class SlackAlertController {
-    private final SlackNotificationSender<String> httpSlackNotificationSender;
+    private final SlackNotificationSender httpSlackNotificationSender;
 
     @Autowired
-    public SlackAlertController(SlackNotificationSender<String> httpSlackNotificationSender) {
+    public SlackAlertController(SlackNotificationSender httpSlackNotificationSender) {
         this.httpSlackNotificationSender = httpSlackNotificationSender;
     }
 

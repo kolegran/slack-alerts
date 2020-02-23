@@ -3,7 +3,6 @@ package com.github.kolegran.slackalerts.webhook;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kolegran.slackalertcontroller.CreateSlackMessageCommand;
-import com.github.kolegran.slackalerts.SlackMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.github.kolegran.slackalerts.SlackNotificationSender;
@@ -19,7 +18,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class HttpSlackNotificationSender implements SlackNotificationSender<String> {
+public class HttpSlackNotificationSender implements SlackNotificationSender {
     private static final int REQUEST_TIMEOUT = 2;
     private static final int TERMINATION_TIMEOUT = 5;
     private static final String CONTENT_TYPE = "application/json";
