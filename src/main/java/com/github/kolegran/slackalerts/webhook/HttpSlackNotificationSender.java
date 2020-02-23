@@ -14,6 +14,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.Optional;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -48,15 +50,19 @@ public class HttpSlackNotificationSender implements SlackNotificationSender<Stri
 
     @Override
     public void shutdown() {
-        final ExecutorService executor = (ExecutorService) httpClient.executor().get();
-        executor.shutdown();
-        try {
-            executor.awaitTermination(TERMINATION_TIMEOUT, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            logger.error("InterruptedException during awaitTermination() method calling");
-        } finally {
-            executor.shutdownNow();
+        final Optional<Executor> executor = httpClient.executor();
+        if (executor.isPresent()) {
+            final ExecutorService executorService = (ExecutorService) executor.get();
+            executorService.shutdown();
+
+            try {
+                executorService.awaitTermination(TERMINATION_TIMEOUT, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                logger.error("InterruptedException during awaitTermination() method calling");
+            } finally {
+                executorService.shutdownNow();
+            }
         }
     }
 
