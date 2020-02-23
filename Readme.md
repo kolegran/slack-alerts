@@ -1,6 +1,6 @@
-##Incoming Webhooks
+## Incoming Webhooks
 
-#####Go to Your Apps -> Features -> Incoming WebHooks -> 
+##### Go to Your Apps -> Features -> Incoming WebHooks -> 
 ```
 1. Activate Incoming WebHooks
 2. Add new WebHook to workspace
